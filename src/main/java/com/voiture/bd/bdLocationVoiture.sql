@@ -14,5 +14,5 @@ USE `bdLocationVoiture`;
   `permis` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `adresse` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
   `telephone` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  CONSTRAINT `clients_matricule_FK` PRIMARY KEY(`matricule`)
+  CONSTRAINT `clients_matricule_PK` PRIMARY KEY(`matricule`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
