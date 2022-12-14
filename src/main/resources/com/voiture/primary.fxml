@@ -13,11 +13,11 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="560.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.voiture.PrimaryController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="560.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.voiture.PrimaryController">
    <children>
       <TabPane prefHeight="560.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE">
          <tabs>
-            <Tab text="Getstion desClients">
+            <Tab text="Gestion des Clients">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0">
                      <children>
@@ -27,7 +27,7 @@
                               <TableColumn fx:id="colNom" prefWidth="132.0" text="Nom" />
                               <TableColumn fx:id="colPermis" prefWidth="110.0" text="Permis" />
                               <TableColumn fx:id="colAdresse" prefWidth="280.0" text="Adresse" />
-                              <TableColumn fx:id="colTele" prefWidth="158.0" text="Téléphone" />
+                              <TableColumn fx:id="colTele" prefWidth="146.0" text="Téléphone" />
                            </columns>
                         </TableView>
                         <GridPane layoutX="70.0" layoutY="32.0" prefHeight="155.0" prefWidth="431.0">
@@ -81,7 +81,76 @@
             </Tab>
             <Tab text="Gestion des Voitures">
                <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                     	<TableView fx:id="tableviewVoiture" layoutY="230.0" onMouseClicked="#getRow" prefHeight="300.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                           <columns>
+                              <TableColumn fx:id="colIdVoiture" prefWidth="61.999998688697815" text="Id Voiture" />
+                              <TableColumn fx:id="colMarque" prefWidth="111.33330917358398" text="Marque" />
+                              <TableColumn fx:id="colModele" prefWidth="81.33334350585938" text="Modèle" />
+                              <TableColumn fx:id="colCouleur" prefWidth="93.3333740234375" text="Couleur" />
+                              <TableColumn fx:id="colImmatriculation" prefWidth="96.6666259765625" text="Immatriculation" />
+                              <TableColumn fx:id="colKilometrage" prefWidth="78.66659545898438" text="Kilometrage" />
+                              <TableColumn fx:id="colPrix" prefWidth="63.33331298828125" text="Prix" />
+                              <TableColumn fx:id="colStatut" prefWidth="89.99993896484375" text="Statut" />
+                           </columns>
+                        </TableView>
+                        <GridPane layoutX="70.0" layoutY="32.0" prefHeight="155.0" prefWidth="431.0">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="247.0" minWidth="10.0" prefWidth="164.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="416.0" minWidth="10.0" prefWidth="267.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <children>
+                              <Label prefHeight="27.0" prefWidth="216.0" text="Id Voiture" />
+                              <Label text="Marque" GridPane.rowIndex="1" />
+                              <Label text="Modèle" GridPane.rowIndex="2" />
+                              <Label text="Couleur" GridPane.rowIndex="3" />
+                              <Label text="Immatriculation" GridPane.rowIndex="4" />
+                              <Label text="Kilometrage" GridPane.rowIndex="5" />
+                              <Label text="Prix" GridPane.rowIndex="6" />
+                              <Label text="Statut" GridPane.rowIndex="7" />
+                              <TextField fx:id="idVoitureField" prefHeight="25.0" prefWidth="249.0" GridPane.columnIndex="1" />
+                              <TextField fx:id="marqueField" prefHeight="25.0" prefWidth="251.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <TextField fx:id="modeleField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                              <TextField fx:id="couleurField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                              <TextField fx:id="immatriculationField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                              <TextField fx:id="kilometrageField" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                              <TextField fx:id="prixField" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                              <TextField fx:id="statutField" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                           </children>
+                        </GridPane>
+                        <Button layoutX="327.0" layoutY="195.0" mnemonicParsing="false" onAction="#reset" prefHeight="25.0" prefWidth="82.0" text="Réinitialiser" />
+                        <GridPane layoutX="605.0" layoutY="25.0" vgap="5.0">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <children>
+                              <Button mnemonicParsing="false" onAction="#listerVoiture" prefWidth="74.0" text="Lister" />
+                              <Button mnemonicParsing="false" onAction="#enregVoiture" text="Enregistrer" GridPane.rowIndex="2" />
+                              <Button mnemonicParsing="false" onAction="#modifierVoiture" prefWidth="74.0" text="Modifier" GridPane.rowIndex="3" />
+                              <Button mnemonicParsing="false" onAction="#supVoiture" prefWidth="74.0" text="Supprimer" GridPane.rowIndex="4" />
+                              <Button mnemonicParsing="false" onAction="#chercherVoiture" prefWidth="74.0" text="Chercher" GridPane.rowIndex="1" />
+                           </children>
+                        </GridPane>
+                     </children>
+                  </AnchorPane>
                </content>
             </Tab>
             <Tab text="Gestion des Locations">
