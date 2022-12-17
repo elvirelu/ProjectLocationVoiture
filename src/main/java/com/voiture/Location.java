@@ -1,132 +1,82 @@
 package com.voiture;
 
-import java.time.LocalDate;
+import java.sql.Date;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
+
+import com.voiture.voitures.ControllerVoiture;
 
 public class Location {
-    private String numeroLocation;
-    private String matricule;
-    private String idVoiture;
-    private LocalDate dateDebut;
-    private LocalDate dateFin;
-    private double coutTotal;
-    private String nom;
-    private String marque;
-    private String modele;
 
-    public Location(Client client, Voitures voiture, LocalDate dateDebut, LocalDate dateFin) {
-        this.numeroLocation = numeroLocation;
-        this.matricule = matricule;
-        this.idVoiture = idVoiture;
-        this.dateDebut = dateDebut;
-        this.dateFin = dateFin;
-        this.coutTotal = calculerCoutTotal();
-        this.matricule = nom;
-        this.idVoiture = idVoiture;
-        this.marque = marque;
-        this.modele = modele;
+    ControllerVoiture CtrV = ControllerVoiture.getControllerVoiture();
+    private String idl;
+    private String client;
+    private String voiture;
+    private Date dated;
+    private Date datef;
+
+    public Location(){}
+    public Location(String idl, String client, String voiture, Date dated, Date datef) {
+        this.idl = idl;
+        this.client = client;
+        this.voiture = voiture;
+        this.dated = dated;
+        this.datef = datef;
+    }
+    public String getIdl() {
+        return idl;
+    }
+    public void setIdl(String idl) {
+        this.idl = idl;
+    }
+    public String getClient() {
+        return client;
+    }
+    public void setClient(String client) {
+        this.client = client;
+    }
+    public String getVoiture() {
+        return voiture;
+    }
+    public void setVoiture(String voiture) {
+        this.voiture = voiture;
+    }
+    public Date getDated() {
+        return dated;
+    }
+    public void setDated(Date dated) {
+        this.dated = dated;
+    }
+    public Date getDatef() {
+        return datef;
+    }
+    public void setDatef(Date datef) {
+        this.datef = datef;
     }
 
-    
-    public String getNumeroLocation() {
-        return numeroLocation;
+    public int getDays(){
+
+            int days = (int) ChronoUnit.DAYS.between(this.dated.toLocalDate(), this.datef.toLocalDate());
+
+        return days;
     }
 
-
-    public void setNumeroLocation(String numeroLocation) {
-        this.numeroLocation = numeroLocation;
-    }
-
-
-    public String getMatricule() {
-        return matricule;
-    }
-
-
-    public void setMatricule(String matricule) {
-        this.matricule = matricule;
-    }
-
-
-    public String getIdVoiture() {
-        return idVoiture;
-    }
-
-
-    public void setIdVoiture(String idVoiture) {
-        this.idVoiture = idVoiture;
-    }
-
-
-    public LocalDate getDateDebut() {
-        return dateDebut;
-    }
-
-
-    public void setDateDebut(LocalDate dateDebut) {
-        this.dateDebut = dateDebut;
-    }
-
-
-    public LocalDate getDateFin() {
-        return dateFin;
+    public Float getCout(){
+        Voitures v = new Voitures();
+        v.setIdVoiture(voiture);
+        List<Voitures> listeVoiture = CtrV.CtrV_Chercher(v);
+        return listeVoiture.get(0).getPrix() * getDays();
     }
 
 
-    public void setDateFin(LocalDate dateFin) {
-        this.dateFin = dateFin;
+    @Override
+    public String toString() {
+        return "Location [idl=" + idl + ", client=" + client + ", voiture=" + voiture + ", dated=" + dated + ", datef="
+                + datef + ", days=" + getDays() + ", cout=" + getCout() + "]";
     }
 
-
-    public double getCoutTotal() {
-        return coutTotal;
-    }
-
-
-    public void setCoutTotal(double coutTotal) {
-        this.coutTotal = coutTotal;
-    }
-
-
-    public String getNom() {
-        return nom;
-    }
-
-
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
-
-
-    public String getMarque() {
-        return marque;
-    }
-
-
-    public void setMarque(String marque) {
-        this.marque = marque;
-    }
-
-
-    public String getModele() {
-        return modele;
-    }
-
-
-    public void setModele(String modele) {
-        this.modele = modele;
-    }
-
-
-    private double calculerCoutTotal() {
-        // Calculez le coût total de la location en fonction du tarif de location de la voiture,
-        // des dates de début et de fin et des éventuels rabais pour le client.
-        // Cette implémentation dépendra de vos exigences spécifiques.
-        // Vous voudrez peut-être également inclure des frais ou surcharges supplémentaires dans le coût total.
-    }
-
-
-    public void setPermis(String permis) {
-    }
+    // public final IntegerProperty daysProperty() { return new SimpleIntegerProperty(getDays()); }
+   
 }
 
 

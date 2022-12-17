@@ -1,14 +1,19 @@
 package com.voiture;
 
-import java.time.Period;
+import java.sql.Date;
+import java.time.ZoneOffset;
 import java.util.List;
 import com.voiture.clients.ControllerClient;
 import com.voiture.locations.ControllerLocation;
 import com.voiture.voitures.ControllerVoiture;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -57,6 +62,8 @@ public class PrimaryController{
         setColumnClient();
         setColumnVoiture();
         setColumnLocation();
+        rempliClientCombo();
+        rempliVoitureCombo();
     }
 
     public void setColumnClient(){
@@ -272,9 +279,9 @@ public class PrimaryController{
         if(prixField.getText()!=""){
             v.setPrix(Float.parseFloat(prixField.getText()));
         }
-        else{
-            v.setPrix((float) 0);
-        }
+        // else{
+        //     v.setPrix((float) 0);
+        // }
         v.setStatut(statut);
         List<Voitures> listeVoiture = CtrV.CtrV_Chercher(v);
         if (listeVoiture == null){
@@ -386,131 +393,119 @@ public class PrimaryController{
     }
 
     //controllerLocation
-    ControllerClient CtrC = ControllerLocation.getControllerLocation();
+    ControllerLocation CtrL = ControllerLocation.getControllerLocation();
     @FXML
-    private TableView<Client> tableviewLocation;
+    private TableView<Location> tableviewLocation;
 
     @FXML
-    private TableColumn<?, ?> colNumeroLocation;
+    private TableColumn<?, ?> colIdl;
 
     @FXML
-    private TableColumn<?, ?> colMatricule;
+    private TableColumn<?, ?> colClient;
 
     @FXML
-    private TableColumn<?, ?> colidVoiture;
+    private TableColumn<?, ?> colVoiture;
 
     @FXML
-    private TableColumn<?, ?> colDateDebut;
+    private TableColumn<?, ?> colDated;
 
     @FXML
-    private TableColumn<?, ?> colDateFin;
+    private TableColumn<?, ?> colDatef;
 
     @FXML
-    private TableColumn<?, ?> colCoutTotal;
+    private TableColumn<?, ?> colDays;
 
     @FXML
-    private TableColumn<?, ?> colidNom;
+    private TableColumn<?, ?> colCout;
 
     @FXML
-    private TableColumn<?, ?> colMarque;
+    private Label labelClient;
 
     @FXML
-    private TableColumn<?, ?> colModele;
+    private Label labelVoiture;
 
     @FXML
-    private TextField numeroLocationField;
+    private TextField idlField;
 
     @FXML
-    private TextField MatriculeField;
+    private ComboBox<String> voitureCombo;
+    
+    @FXML
+    private ComboBox<String> clientCombo;
 
     @FXML
-    private TextField idVoitureField;
+    private DatePicker datedPicker;
 
     @FXML
-    private TextField dateDebutField;
-
-    @FXML
-    private TextField dateFinField;
-
-    @FXML
-    private TextField coutTotalField;
-
-    @FXML
-    private TextField nomField;
-
-    @FXML
-    private TextField marqueField;
-
-    @FXML
-    private TextField modeleField;
-
-    @FXML
-    public void initialize() {
-        setColumnClient();
-        setColumnVoiture();
-        setColumnLocation();
-    }
+    private DatePicker datefPicker;
 
     public void setColumnLocation(){
-        colNumeroLocation.setCellValueFactory(new PropertyValueFactory<>("numéro Location"));
-        colMatricule.setCellValueFactory(new PropertyValueFactory<>("Matricule"));
-        colidVoiture.setCellValueFactory(new PropertyValueFactory<>("IdVoiture"));
-        colDateDebut.setCellValueFactory(new PropertyValueFactory<>("Date Début"));
-        colDateFin.setCellValueFactory(new PropertyValueFactory<>("Date Fin"));
-        colCoutTotal.setCellValueFactory(new PropertyValueFactory<>("Coût Total"));
-        colNom.setCellValueFactory(new PropertyValueFactory<>("Nom"));
-        colMarque.setCellValueFactory(new PropertyValueFactory<>("Marque"));
-        colModele.setCellValueFactory(new PropertyValueFactory<>("Modèle"));
+        colIdl.setCellValueFactory(new PropertyValueFactory<>("idl"));
+        colClient.setCellValueFactory(new PropertyValueFactory<>("client"));
+        colVoiture.setCellValueFactory(new PropertyValueFactory<>("voiture"));
+        colDated.setCellValueFactory(new PropertyValueFactory<>("dated"));
+        colDatef.setCellValueFactory(new PropertyValueFactory<>("datef"));
+        colDays.setCellValueFactory(new PropertyValueFactory<>("days"));
+        colCout.setCellValueFactory(new PropertyValueFactory<>("cout"));
+    }
+
+    
+    void rempliClientCombo(){
+        List<String> listeIdClient = CtrL.CtrL_GetIdClient();
+        for(String idClient: listeIdClient){
+            clientCombo.getItems().add(idClient);
+        }
     }
 
     @FXML
-    public void getRowLocation(){
-        Location location = tableviewLocation.getSelectionModel().getSelectedItem();
-        if(location != null){   
-            numeroLocationField.setText(location.getNumeroLocation());
-            MatriculeField.setText(location.getMatricule());
-            idVoitureField.setText(location.getIdVoiture());
-            dateDebutField.setText(location.getDateDebut());
-            dateFinField.setText(location.getDateFin());
-            coutTotalField.setText(location.getCoutTotal());
-            nomField.setText(location.getNom());
-            marqueField.setText(location.getMarque());
-            modeleField.setText(location.getModele());
+    void comboClientInfo(){
+        String clientSelected = clientCombo.getSelectionModel().getSelectedItem();
+        Client client = new Client();
+        client.setMatricule(clientSelected);
+        List<Client> listeClient = CtrC.CtrC_Chercher(client);
+        if(clientCombo.getValue() != null) {
+            labelClient.setText(listeClient.get(0).getNom());
+        }
+    }
+
+    void rempliVoitureCombo(){
+        List<String> listeIdVoiture = CtrL.CtrL_GetIdVoiture();
+        for(String idVoiture: listeIdVoiture){
+            voitureCombo.getItems().add(idVoiture);
+        }
+    }
+
+    @FXML
+    void comboVoitureInfo(){
+        String voitureSelected = voitureCombo.getSelectionModel().getSelectedItem();
+        Voitures voiture = new Voitures();
+        voiture.setIdVoiture(voitureSelected);
+        List<Voitures> listeVoiture = CtrV.CtrV_Chercher(voiture);
+        if(voitureCombo.getValue() != null){
+            Voitures v = listeVoiture.get(0);
+            labelVoiture.setText(v.getMarque() + " " + v.getModele() + " " + v.getCouleur());
         }
     }
 
     @FXML
     void chercherLocation(ActionEvent event) {
-        String numeroLocation = numeroLocationField.getText();
-        String matricule = matriculeField.getText();
-        String idVoiture = idVoitureField.getText();
-        String dateDebut = dateDebut.getText();
-        String dateFin = dateFinField.getText();
-        String coutTotal = coutTotalField.getText();
-        String nom = nomField.getText();
-        String permis = permisField.getText();
-        String marque = marqueField.getText();
-        String modele = modeleField.getText();
+        String idl = idlField.getText();
+        String client = clientCombo.getSelectionModel().getSelectedItem();
+        String voiture = voitureCombo.getSelectionModel().getSelectedItem();
         Location location = new Location();
-        location.setNumeroLocation(numeroLocation);
-        location.setMatricule(matricule);
-        location.setIdVoiture(idVoiture);
-        location.setDateDebut(dateDebut);
-        location.setDateFin(dateFin);
-        location.setCoutTotal(coutTotal);
-        location.setNom(nom);
-        location.setPermis(permis);
-        location.setMarque(marque);
-        location.setModele(modele);
-        List<Client> listeLocation = CtrC.CtrC_Chercher(location);
+        location.setIdl(idl);
+        location.setClient(client);
+        location.setVoiture(voiture);
+        List<Location> listeLocation = CtrL.CtrL_Chercher(location);
         if(listeLocation == null){
             Alert alert = new Alert(AlertType.ERROR);
             alert.setHeaderText("Location n'exist pas");
             alert.show();
         }
         else{
-            tableviewClient.getItems().clear();
+            tableviewLocation.getItems().clear();
             for(Location unelocation: listeLocation){
+                // System.out.println(unelocation);
                 tableviewLocation.getItems().add(unelocation);
             } 
         }
@@ -518,23 +513,20 @@ public class PrimaryController{
 
     @FXML
     void enregLocation(ActionEvent event) {
-        String numeroLocation = numeroLocationField.getText();
-        String matricule = matriculeField.getText();
-        String idVoiture = idVoitureField.getText();
-        String dateDebut = dateDebutField.getText();
-        String dateFin = dateFinField.getText();
-        String coutTotal = coutTotalField.getText();
-        String nom = nomField.getText();
-        String marque = marqueField.getText();
-        String modele = modeleField.getText();
-        Location location = new Location(numeroLocation, matricule, idVoiture, dateDebut, dateFin, coutTotal, nom, marque, modele);
-        if(CtrC.CtrC_ChercherID(location)){
+        String idl = idlField.getText();
+        String client = clientCombo.getSelectionModel().getSelectedItem();
+        String voiture = voitureCombo.getSelectionModel().getSelectedItem();
+        Date dated = new Date(Date.from(datedPicker.getValue().atStartOfDay(ZoneOffset.UTC).toInstant()).getTime());
+        Date datef = new Date(Date.from(datefPicker.getValue().atStartOfDay(ZoneOffset.UTC).toInstant()).getTime());
+
+        Location location = new Location(idl, client, voiture, dated, datef);
+        if(CtrL.CtrL_ChercherID(location)){
             Alert alert = new Alert(AlertType.ERROR);
             alert.setHeaderText("Location exist");
             alert.show();
         }
-        else{
-            String message = CtrC.CtrC_Enregistrer(location);
+        else{      
+            String message = CtrL.CtrL_Enregistrer(location);
             Alert alert = new Alert(AlertType.INFORMATION);
             alert.setHeaderText(message);
             alert.show();
@@ -544,7 +536,7 @@ public class PrimaryController{
     @FXML
     void listerLocation(ActionEvent event) {
         tableviewLocation.getItems().clear();
-        List<Location> listeLocation = CtrC.CtrC_GetAll();
+        List<Location> listeLocation = CtrL.CtrL_GetAll();
         for(Location location: listeLocation){
             tableviewLocation.getItems().add(location);
         } 
@@ -552,23 +544,19 @@ public class PrimaryController{
 
     @FXML
     void modifierLocation(ActionEvent event) {
-        String numeroLocation = numeroLocationField.getText();
-        String matricule = matriculeField.getText();
-        String idVoiture = idVoitureField.getText();
-        String dateDebut = dateDebutField.getText();
-        String dateFin = dateFinField.getText();
-        String coutTotal = coutTotalField.getText();
-        String nom = nomField.getText();
-        String marque = marqueField.getText();
-        String modele = modeleField.getText();
-        Location location = new Location(numeroLocation, matricule, idVoiture, dateDebut, dateFin, coutTotal, nom, marque, modele);
-        if(!CtrC.CtrC_ChercherID(location)){
+        String idl = idlField.getText();
+        String client = clientCombo.getSelectionModel().getSelectedItem();
+        String voiture = voitureCombo.getSelectionModel().getSelectedItem();
+        Date dated = (Date) Date.from(datedPicker.getValue().atStartOfDay(ZoneOffset.UTC).toInstant());
+        Date datef = (Date) Date.from(datefPicker.getValue().atStartOfDay(ZoneOffset.UTC).toInstant());
+        Location location = new Location(idl, client, voiture, dated, datef);
+        if(!CtrL.CtrL_ChercherID(location)){
             Alert alert = new Alert(AlertType.ERROR);
             alert.setHeaderText("Location n'exist pas");
             alert.show();
         }
         else{
-            String message = CtrC.CtrC_Modifier(location);
+            String message = CtrL.CtrL_Modifier(location);
             Alert alert = new Alert(AlertType.INFORMATION);
             alert.setHeaderText(message);
             alert.show();
@@ -579,14 +567,14 @@ public class PrimaryController{
     void supLocation(ActionEvent event) {
         String message = "";
         Location location = new Location();
-        location.setNumeroLocation(numeroLocationField.getText());
-        if(!CtrC.CtrC_ChercherID(location)){
+        location.setIdl(idlField.getText());
+        if(!CtrL.CtrL_ChercherID(location)){
             Alert alert = new Alert(AlertType.ERROR);
             alert.setHeaderText("Location n'exist pas");
             alert.show();
         }
         else{
-            message = CtrC.CtrC_Supprimer(location);
+            message = CtrL.CtrL_Supprimer(location);
             Alert alert = new Alert(AlertType.INFORMATION);
             alert.setHeaderText(message);
             alert.show();
@@ -595,23 +583,18 @@ public class PrimaryController{
 
     @FXML
     void resetLocation(ActionEvent event){
-        numeroLocationField.clear();
-        matriculeField.clear();
-        idVoitureField.clear();
-        dateDebutField.clear();
-        dateFinField.clear();
-        coutTotalField.clear();
-        nomField.clear();
-        marqueField.clear();
-        modeleField.clear();
+        Platform.runLater(() -> {
+            idlField.clear();
+            clientCombo.getSelectionModel().clearSelection();
+            voitureCombo.getSelectionModel().clearSelection();
+            labelClient.setText("");
+            labelVoiture.setText("");
+            datedPicker.getEditor().clear();
+            datefPicker.getEditor().clear();
+        });
+        
     }
-   /* @FXML
-    void calculerCoutTotal() {
-        double prix = Voitures.getPrix();
-        Period periode = Period.between(dateDebut, dateFin);
-        int nombreDeJours = periode.getDays();
-        return prix * nombreDeJours;
-    }*/
+
 }
 
 

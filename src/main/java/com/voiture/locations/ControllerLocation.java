@@ -5,44 +5,51 @@ import java.util.List;
 import com.voiture.Location;
 
 public class ControllerLocation {
-    private static ControllerLocation CtrC_Instance = null;
+    private static ControllerLocation CtrL_Instance = null;
     private static ModelLocation Model_Instance = null;
 
     private ControllerLocation(){}
 
     public static synchronized ControllerLocation getControllerLocation(){
         try{
-            if(CtrC_Instance == null){
-                CtrC_Instance = new ControllerLocation();
+            if(CtrL_Instance == null){
+                CtrL_Instance = new ControllerLocation();
                 Model_Instance = ModelLocation.getLocationModel();
             }
-            return CtrC_Instance;
+            return CtrL_Instance;
         }catch(Exception e){
             throw new RuntimeException(e);
         }
     }
 
-    public String CtrC_Enregistrer(Location location){
-        return Model_Instance.MdlC_Enregistrer(location);
+    public List<String> CtrL_GetIdClient(){
+        return Model_Instance.MdlL_GetIdClient();
     }
 
-    public List<Location> CtrC_GetAll(){
-        return Model_Instance.MdlC_GetAll();
+    public List<String> CtrL_GetIdVoiture(){
+        return Model_Instance.MdlL_GetIdVoiture();
+    }
+    public String CtrL_Enregistrer(Location location){
+        return Model_Instance.MdlL_Enregistrer(location);
     }
 
-    public String CtrC_Modifier(Location location){
-        return Model_Instance.MdlC_Modifier(location);
+    public List<Location> CtrL_GetAll(){
+        return Model_Instance.MdlL_GetAll();
     }
 
-    public boolean CtrC_ChercherID(Location location){
-        return Model_Instance.MdlC_ChercherID(location);
+    public String CtrL_Modifier(Location location){
+        return Model_Instance.MdlL_Modifier(location);
     }
 
-    public List<Location> CtrC_Chercher(Location location){
-        return Model_Instance.MdlC_Chercher(location);
+    public boolean CtrL_ChercherID(Location location){
+        return Model_Instance.MdlL_ChercherID(location);
     }
 
-    public String CtrC_Supprimer(Location location){
-        return Model_Instance.MdlC_Supprimer(location);
+    public List<Location> CtrL_Chercher(Location location){
+        return Model_Instance.MdlL_Chercher(location);
+    }
+
+    public String CtrL_Supprimer(Location location){
+        return Model_Instance.MdlL_Supprimer(location);
     }
 }

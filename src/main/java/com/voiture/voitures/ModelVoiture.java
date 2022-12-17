@@ -136,7 +136,13 @@ public class ModelVoiture {
             stmt.setString(1,voiture.getIdVoiture());
             stmt.setString(2,voiture.getMarque());
             stmt.setString(3,voiture.getImmatriculation());
-            stmt.setFloat(4,voiture.getPrix());
+            Float prix = voiture.getPrix();
+            if(prix == null){
+                stmt.setFloat(4,0);    
+            }
+            else{
+                stmt.setFloat(4,prix);
+            }
             stmt.setString(5,voiture.getStatut());
             ResultSet rs = stmt.executeQuery();
             while(rs.next()){
