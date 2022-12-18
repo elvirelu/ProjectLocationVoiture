@@ -160,7 +160,7 @@
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                     	<TableView fx:id="tableviewLocation" layoutY="230.0" onMouseClicked="#getRowVoiture" prefHeight="295.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                     	<TableView fx:id="tableviewLocation" layoutY="230.0" onMouseClicked="#getRowLocation" prefHeight="295.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                            <columns>
                               <TableColumn fx:id="colIdl" prefWidth="113.0" text="Numéro Location" />
                               <TableColumn fx:id="colClient" prefWidth="113.0" text="Client" />

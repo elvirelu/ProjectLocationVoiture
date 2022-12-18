@@ -18,7 +18,7 @@ public class ModelLocation {
 
     private static final String ENREGISTRER = "INSERT INTO locations VALUES(?,?,?,?,?,?,?)";
     private static final String GET_ALL = "SELECT * FROM locations";
-    private static final String MODIFIER = "UPDATE locations SET client=?, voiture=?, dated=?, datef=? WHERE idl=?";
+    private static final String     MODIFIER = "UPDATE locations SET client=?, voiture=?, dated=?, datef=? WHERE idl=?";
     private static final String CHERCHER = "SELECT * FROM locations WHERE idl=? or client=? or voiture=?";
     private static final String CHERCHERID = "SELECT * FROM locations WHERE idl=?";
     private static final String SUPPRIMER = "DELETE FROM locations WHERE idl=?";

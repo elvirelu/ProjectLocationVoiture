@@ -1,6 +1,7 @@
 package com.voiture;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.List;
 import com.voiture.clients.ControllerClient;
@@ -252,6 +253,18 @@ public class PrimaryController{
     }
 
     @FXML
+    public void getRowLocation(){
+        Location location = tableviewLocation.getSelectionModel().getSelectedItem();
+        if(location != null){   
+            idlField.setText(location.getIdl());
+            clientCombo.setValue(location.getClient());
+            voitureCombo.setValue(location.getVoiture());
+            datedPicker.setValue(location.getDated().toLocalDate());
+            datefPicker.setValue(location.getDatef().toLocalDate());
+        }
+    }
+
+    @FXML
     public void getRowVoiture(){
         Voitures v = tableviewVoiture.getSelectionModel().getSelectedItem();
         if(v != null){   
@@ -279,9 +292,6 @@ public class PrimaryController{
         if(prixField.getText()!=""){
             v.setPrix(Float.parseFloat(prixField.getText()));
         }
-        // else{
-        //     v.setPrix((float) 0);
-        // }
         v.setStatut(statut);
         List<Voitures> listeVoiture = CtrV.CtrV_Chercher(v);
         if (listeVoiture == null){
@@ -516,8 +526,8 @@ public class PrimaryController{
         String idl = idlField.getText();
         String client = clientCombo.getSelectionModel().getSelectedItem();
         String voiture = voitureCombo.getSelectionModel().getSelectedItem();
-        Date dated = new Date(Date.from(datedPicker.getValue().atStartOfDay(ZoneOffset.UTC).toInstant()).getTime());
-        Date datef = new Date(Date.from(datefPicker.getValue().atStartOfDay(ZoneOffset.UTC).toInstant()).getTime());
+        java.sql.Date dated = new Date(Date.from(datedPicker.getValue().atStartOfDay(ZoneOffset.UTC).toInstant()).getTime());
+        java.sql.Date datef = new Date(Date.from(datefPicker.getValue().atStartOfDay(ZoneOffset.UTC).toInstant()).getTime());
 
         Location location = new Location(idl, client, voiture, dated, datef);
         if(CtrL.CtrL_ChercherID(location)){
@@ -547,8 +557,8 @@ public class PrimaryController{
         String idl = idlField.getText();
         String client = clientCombo.getSelectionModel().getSelectedItem();
         String voiture = voitureCombo.getSelectionModel().getSelectedItem();
-        Date dated = (Date) Date.from(datedPicker.getValue().atStartOfDay(ZoneOffset.UTC).toInstant());
-        Date datef = (Date) Date.from(datefPicker.getValue().atStartOfDay(ZoneOffset.UTC).toInstant());
+        java.sql.Date dated = new Date(Date.from(datedPicker.getValue().atStartOfDay(ZoneOffset.UTC).toInstant()).getTime());
+        java.sql.Date datef = new Date(Date.from(datefPicker.getValue().atStartOfDay(ZoneOffset.UTC).toInstant()).getTime());
         Location location = new Location(idl, client, voiture, dated, datef);
         if(!CtrL.CtrL_ChercherID(location)){
             Alert alert = new Alert(AlertType.ERROR);
